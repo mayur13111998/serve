@@ -8,7 +8,6 @@ export default class Products extends BaseSchema {
       table.increments('product_id').primary
       table.string('product_name').notNullable()
       table.decimal('product_price').notNullable()
-      table.string('product_image').nullable()
       table.timestamps(true,true)
     })
   }
