@@ -1,6 +1,8 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Customer from 'App/Models/Customer'
 
+import Hash from '@ioc:Adonis/Core/Hash'
+
 export default class CustomersController {
     public async index({ response }: HttpContextContract) {
         const customer = await Customer.all()
@@ -22,8 +24,14 @@ export default class CustomersController {
         // return response.json(customer)
 
         const customer_name = request.input('customer_name')
-
-        const customber = await Customer.create({customer_name:customer_name})
+        const password = request.input('password')
+        const customer_email =  request.input('customer_email')
+        const createBy = "admin"
+        const updateBy = "admin"
+        const IsActive = true
+        const IsDeleted = false
+        const customber = await Customer.create({customer_name,customer_email, password,createBy, updateBy,IsActive, IsDeleted})
+        
         return response.status(201).json({
             massage: 'New Customber is create'
         })
@@ -74,6 +82,19 @@ export default class CustomersController {
                 massage:'Customber is not find'
             })
         }
+    }
+
+    public async login({auth,request,response}:HttpContextContract){
+        const customer_email = request.input('customer_email')
+        const password = request.input('password')
+
+        const customer = await auth.use('api').attempt(customer_email,password)
+
+                return response.status(200).json({
+                    isLoggin: true,
+                    message : "login successfully",
+                    token: customer
+                })
     }
 
 }

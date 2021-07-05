@@ -13,6 +13,7 @@ Route.group(() => {
   Route.get('/customer/:id', 'CustomersController.show')
   Route.delete('/customer/:id', 'CustomersController.destroy')
   Route.patch('/customer/:id/edit', 'CustomersController.edit')
+  Route.post('/customer/login','CustomersController.login')
 
   Route.group(() => {
     Route.get('/', 'ProductsController.index')
@@ -53,6 +54,9 @@ Route.group(() => {
 
   }).prefix('order')
 
+  Route.group(()=>{
+    Route.post('/redux','ReduxesController.store')
+  })
 
 }).prefix('api')
 
